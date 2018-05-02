@@ -1,4 +1,4 @@
-package hellotvxlet;
+package Tetris;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
