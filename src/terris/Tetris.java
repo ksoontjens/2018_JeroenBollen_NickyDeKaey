@@ -3,8 +3,9 @@
  * and open the template in the editor.
  */
 
-package Tetris;
+package terris;
 
+import Tetris.*;
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
