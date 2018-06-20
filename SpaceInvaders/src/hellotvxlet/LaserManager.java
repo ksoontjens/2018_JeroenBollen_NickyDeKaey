@@ -4,9 +4,9 @@
  */
 
 package hellotvxlet;
+
 import java.util.ArrayList;
 import org.havi.ui.HScene;
-
 
 /**
  *
@@ -70,6 +70,5 @@ public class LaserManager {
       arrayEnemyLasers=new ArrayList();
      arrayPlayerLasers=new ArrayList();
     }
-
 }
 

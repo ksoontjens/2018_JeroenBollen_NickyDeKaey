@@ -17,8 +17,8 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
     MijnComponent mc;
     LaserManager laserman=new LaserManager();
     HScene scene;
-    HTextButton start;
-    HTextButton retry;
+     HTextButton start;
+     HTextButton retry;
      
     Random rgen=new Random();
     
@@ -190,7 +190,6 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
                     scene.add(pLaser);
                     scene.popToFront(pLaser);
                     break;
-
             }
         }
     }
