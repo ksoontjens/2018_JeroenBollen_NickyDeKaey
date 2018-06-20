@@ -9,6 +9,9 @@ package hellotvxlet;
  *
  * @author student
  */
-public class PlayerLasers{
-    
+public class PlayerLaser extends Sprite{
+    public PlayerLaser()
+    {
+        super("playerLaser.png");
+    }
 }

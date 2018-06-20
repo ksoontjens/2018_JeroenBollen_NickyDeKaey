@@ -9,9 +9,12 @@ package hellotvxlet;
  *
  * @author student
  */
-public class EnemyLaser {
+public class EnemyLaser extends Sprite{
 
-    
+    public EnemyLaser()
+    {
+        super("enemyLaser.png");
+    }
     
 }
 /**/

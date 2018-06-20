@@ -15,10 +15,10 @@ import java.awt.Color;
 public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
     
     MijnComponent mc;
-
+    LaserManager laserman=new LaserManager();
     HScene scene;
-     HTextButton start;
-
+    HTextButton start;
+    HTextButton retry;
      
     Random rgen=new Random();
     
@@ -45,7 +45,12 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
         start.requestFocus();
         start.addHActionListener(this);
         
-        
+        retry =new HTextButton("retry",200,250,320,50);
+        retry.setBackgroundMode(HVisible.BACKGROUND_FILL); 
+        retry.setBackground(Color.BLUE);
+        retry.setActionCommand("retry");
+        retry.requestFocus();
+        retry.addHActionListener(this);
         
         scene.setVisible(true);
      
@@ -55,7 +60,7 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
     public void startSpel() {
         mc = new MijnComponent(); 
         scene.add(mc);
-        
+        laserman.setScene(scene);
         UserEventRepository uev = new UserEventRepository("my collection");
         uev.addAllArrowKeys();
         EventManager.getInstance().addUserEventListener(this, uev);
@@ -81,7 +86,53 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
         if (enemy!=null) enemy.verplaatsEnemy(1);
         
 
+        deler++;
+        if (rgen.nextInt(50)==10)
+        {
+        EnemyLaser eLaser=new EnemyLaser();
+        eLaser.move(enemy.getX()+32, enemy.getY()+64);
+        laserman.addEnemyLaser(eLaser);        
+        scene.add(eLaser);
+        scene.popToFront(eLaser);
+        deler=0;
+        }        
+
+        laserman.moveAllLasers();
         
+        
+        if (laserman.testPlayerCollision(speler)){
+        scene.remove(mc);
+        laserman.removeLazers();
+        scene.dispose();
+        t.cancel();
+        scene = HSceneFactory.getInstance().getDefaultHScene();  
+        retry =new HTextButton("game over : retry",200,250,320,50);
+        retry.setBackgroundMode(HVisible.BACKGROUND_FILL); 
+        retry.setBackground(Color.BLUE);
+        scene.add(retry);
+        scene.validate();
+        retry.setActionCommand("retry");
+        retry.requestFocus();
+        retry.addHActionListener(this);
+        scene.setVisible(true);
+        }
+        
+        if (laserman.testEnemyCollision(enemy)){   
+        laserman.removeLazers();
+        scene.remove(mc);
+        scene.dispose();
+        t.cancel();
+        scene = HSceneFactory.getInstance().getDefaultHScene();  
+        retry =new HTextButton("play again",200,250,320,50);
+        retry.setBackgroundMode(HVisible.BACKGROUND_FILL); 
+        retry.setBackground(Color.BLUE);
+        scene.add(retry);
+        scene.validate();
+        retry.setActionCommand("retry");
+        retry.requestFocus();
+        retry.addHActionListener(this);
+        scene.setVisible(true);
+        }
     }
     
     public void startXlet() {
@@ -102,7 +153,13 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
            scene.repaint();
            return;
         }
-     
+     if(arg0.getActionCommand().equals("retry"))
+        {
+           scene.remove(retry);
+           this.startSpel();
+           scene.repaint();
+           return;
+        }
     }
     public void userEventReceived(UserEvent e) {
         
@@ -125,7 +182,15 @@ public class HelloTVXlet implements Xlet, UserEventListener, HActionListener{
                     scene.repaint();
                     break;
                     
-                
+                case HRcEvent.VK_UP:                    
+                    System.out.println("shots fired");
+                    PlayerLaser pLaser=new PlayerLaser();
+                    pLaser.move(speler.getX()+21, speler.getY()-20);
+                    laserman.addPlayerLaser(pLaser);                     
+                    scene.add(pLaser);
+                    scene.popToFront(pLaser);
+                    break;
+
             }
         }
     }
